@@ -45,7 +45,7 @@ class AdoptarInLine(admin.StackedInline):
 @admin.register(Animal)
 class AnimalInline(admin.ModelAdmin):
 
-    list_display = ('nombre','tipo_de_animal','estado_de_salud','sexo','edad', 'color','adoptantes','fecha_de_adopcion', 'esterilizado',)
+    list_display = ('nombre','tipo_de_animal','estado_de_salud', 'numero_telefono','sexo','edad', 'color','adoptantes','fecha_de_adopcion', 'esterilizado',)
     search_fields = ('nombre', 'adoptar__Adoptante_idAdoptante__idAdoptante',)
     inlines = [AdoptarInLine,]
 
@@ -54,6 +54,13 @@ class AnimalInline(admin.ModelAdmin):
         adoptante = Adoptar.objects.filter(Animal_idAnimal = Animal.idAnimal).order_by('-fecha').first()
         try:
             return mark_safe("<a href='/animalitos/adoptante/%s'>%s</a> " %(adoptante.Adoptante_idAdoptante.idAdoptante,adoptante.Adoptante_idAdoptante))
+        except:
+            return 0
+
+    def numero_telefono(self,Animal):
+        adoptante = Adoptar.objects.filter(Animal_idAnimal = Animal.idAnimal).order_by('-fecha').first()
+        try:
+            return  adoptante.Adoptante_idAdoptante.telefono
         except:
             return 0
 
@@ -87,7 +94,7 @@ class AnimalInline(admin.ModelAdmin):
     estado_de_salud.admin_order_field='salud'
     fecha_de_adopcion.admin_order_field='adoptar__fecha'
     adoptantes.admin_order_field = 'adoptar__Adoptante_idAdoptante'
-
+    numero_telefono.admin_order_field= 'adoptar__Adoptante_idAdoptante__telefono'
 @admin.register(Adoptante)
 class Adoptante(admin.ModelAdmin):
     list_display = ('nombre','apellido','telefono','direccion','cedula','departamento','cuidad','email','informacion')
