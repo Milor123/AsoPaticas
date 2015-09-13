@@ -46,7 +46,7 @@ class AdoptarInLine(admin.StackedInline):
 class AnimalInline(admin.ModelAdmin):
 
     list_display = ('nombre','tipo_de_animal','estado_de_salud', 'numero_telefono','sexo','edad', 'color','adoptantes','fecha_de_adopcion', 'esterilizado',)
-    search_fields = ('nombre', 'adoptar__Adoptante_idAdoptante__idAdoptante',)
+    search_fields = ('nombre', 'adoptar__Adoptante_idAdoptante__idAdoptante','adoptar__Adoptante_idAdoptante__telefono')
     inlines = [AdoptarInLine,]
 
 
